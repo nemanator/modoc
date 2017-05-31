@@ -1,0 +1,20 @@
+.module:hover {
+	color: red !important;
+	cursor: pointer;
+	user-select: none;
+	/*z-index: 9999 !important;*/
+}
+
+/*.dropdown {
+	visibility: hidden;
+	display: none;
+}
+
+.dropdown.toggled {
+	visibility: visible;
+	display: block;
+}*/
+
+body {
+	background-color: red;
+}

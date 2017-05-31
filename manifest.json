@@ -1,0 +1,15 @@
+{
+	"manifest_version": 2,
+	"name": "Modoc",
+	"version": "0.1",
+	"permissions": [
+      "https://registry.npmjs.org/*"
+  ],
+	"content_scripts": [
+		{
+			"matches": ["*://*.github.com/*/*/*/*/*"],
+			"css": ["main.bundle.css"],
+			"js": ["index.bundle.js"]
+		}
+	]
+}
