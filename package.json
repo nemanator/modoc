@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack --config ./webpack.config --watch",
-    "build": "webpack --config ./webpack.config"
+    "build": "webpack --config ./webpack.config",
+    "git": "git status && git add . && git commit -m 'Simple Fix' && git push -u origin master"
   },
   "dependencies": {
     "axios": "^0.16.1",

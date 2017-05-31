@@ -3,8 +3,6 @@ import axios from 'axios'
 import main from './main.css'
 import './manifest.json'
 
-// let txt = fs.readFileSync(testDir, 'UTF-8')
-
 let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
 
 function validateModule(name) {
