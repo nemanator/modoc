@@ -28,7 +28,8 @@ module.exports = {
 				loader: 'file-loader',
 				query: {
 					name: '[name].[ext]'
-				}
+				},
+				exclude: /node_modules/
 			}
 		]
 	},

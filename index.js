@@ -1,7 +1,8 @@
-const validate = require('validate-npm-package-name')
-const axios = require('axios')
-const main = require('./main.css')
-require('./manifest.json')
+import validate from 'validate-npm-package-name'
+import axios from 'axios'
+import main from './main.css'
+import './manifest.json'
+
 // let txt = fs.readFileSync(testDir, 'UTF-8')
 
 let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
@@ -75,6 +76,5 @@ if (isJavaScript) {
 function toggle(e) {
 	
 }
-
 
 // let builtInModules = [ 'assert', 'buffer', 'child_process', 'cluster', 'console', 'constants', 'crypto', 'dgram', 'dns', 'domain', 'events', 'fs', 'http', 'https', 'module', 'net', 'os', 'path', 'process', 'punycode', 'querystring', 'readline', 'repl', 'stream', 'string_decoder', 'timers', 'tls', 'tty', 'url', 'util', 'v8', 'vm', 'zlib' ]
