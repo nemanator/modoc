@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "click-outside": "^2.0.2",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {

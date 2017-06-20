@@ -1,33 +1,35 @@
-import validate from 'validate-npm-package-name'
 import axios from 'axios'
+import clickOutside from 'click-outside'
+import validate from 'validate-npm-package-name'
 import main from './main.css'
 import './manifest.json'
 import './icons/document-16.png'
 import './icons/document-48.png'
 import './icons/document-128.png'
 
-// check to see if the file type is javascript
-let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
 
-// a function to validate if a module is even a valid module name.
-function validateModule(name) {
-	let validation = validate(name)
-	let isValid = validation.validForNewPackages || validation.validForOldPackages
-	if (validation.warnings) {
-		validation.warnings.forEach(warning => {
-			if (warning === 'path is a core module name') {
-				isValid = false
-			}
-		})
-	}
-	return {
-		isValid,
-		validation
-	}
-}
-
-// only attempt find docs if the file is javascript
+// Defer execution of script due to Forces reflow violation.
 function addDocs() {
+	// check to see if the file type is javascript
+	let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
+
+	// a function to validate if a module is even a valid module name.
+	function validateModule(name) {
+		let validation = validate(name)
+		let isValid = validation.validForNewPackages || validation.validForOldPackages
+		if (validation.warnings) {
+			validation.warnings.forEach(warning => {
+				if (warning === 'path is a core module name') {
+					isValid = false
+				}
+			})
+		}
+		return {
+			isValid,
+			validation
+		}
+	}
+// only attempt the file is javascript	
 	if (isJavaScript) {
 		// find all spans with class of pl-c1 or pl-k. This is the class name of require statements
 		let spans = document.querySelectorAll('.pl-c1,.pl-k')
@@ -83,6 +85,11 @@ function addDocs() {
 								dropDown.classList.remove('toggled')
 							}
 						})
+						clickOutside(moduleEl, e => {
+							if (dropDown.classList.contains('toggled')) {
+								dropDown.classList.remove('toggled')
+							}
+						})
 					}).catch(error => {
 						console.error('Modoc plugin error:', error)
 					})
@@ -94,6 +101,21 @@ function addDocs() {
 	}
 }
 
-addDocs()
+
+let currentLocation = window.location.href
+console.log(currentLocation)
+setInterval(function() {
+	if (window.location.href !== currentLocation) {
+		console.log('changed')
+		currentLocation = window.location.href
+		setTimeout(function() {
+			addDocs()
+		}, 1000)
+	}
+}, 500)
+
+setTimeout(function() {
+	addDocs()
+}, 1000)
 
 // let builtInModules = [ 'assert', 'buffer', 'child_process', 'cluster', 'console', 'constants', 'crypto', 'dgram', 'dns', 'domain', 'events', 'fs', 'http', 'https', 'module', 'net', 'os', 'path', 'process', 'punycode', 'querystring', 'readline', 'repl', 'stream', 'string_decoder', 'timers', 'tls', 'tty', 'url', 'util', 'v8', 'vm', 'zlib' ]
