@@ -25,7 +25,7 @@ If you would like to contribute to this repository, below is an overview of this
     npm run build
 
 **View in Chrome**
- - Visit [Chrome Extensions](chrome://extensions/)
+ - Open chrome://extensions/ in chrome.
  - Check the 'developer mode' check box.
  - Click 'Load unpacked extension'
- - Open the 
+ - Open up a github page and test!
