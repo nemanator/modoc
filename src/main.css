@@ -1,8 +1,7 @@
 .module:hover {
-	color: red !important;
+	color: red;
 	cursor: pointer;
 	user-select: none;
-	/*z-index: 9999 !important;*/
 }
 
 .dropdown {
@@ -11,8 +10,4 @@
 
 .dropdown.toggled {
 	display: block;
-}
-
-body {
-	background-color: red;
 }

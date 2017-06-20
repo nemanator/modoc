@@ -27,69 +27,73 @@ function validateModule(name) {
 }
 
 // only attempt find docs if the file is javascript
-if (isJavaScript) {
-	// find all spans with class of pl-c1 or pl-k. This is the class name of require statements
-	let spans = document.querySelectorAll('.pl-c1,.pl-k')
-	let modules = []
-	let npmRegistry = 'https://registry.npmjs.org/'
+function addDocs() {
+	if (isJavaScript) {
+		// find all spans with class of pl-c1 or pl-k. This is the class name of require statements
+		let spans = document.querySelectorAll('.pl-c1,.pl-k')
+		let modules = []
+		let npmRegistry = 'https://registry.npmjs.org/'
 
-	// iterate over the require statements.
-	Object.keys(spans).forEach(span => {
-		// make sure the span is a require statement
-		if (spans[span].innerText === 'require' || spans[span].innerText === 'from') {
-			// moduleEl is the actual name of the module. example: 'axios'
-			let moduleEl = spans[span].nextSibling.nextSibling
-			// fileLine is the line of the require statement
-			let fileLine = spans[span].parentElement
-			// name is moduleEl, parsed. ex: 'axios' => axios
-			let name = moduleEl.innerText.replace(/['"`]/g, '')
-			let { isValid, validation } = validateModule(name)
-			if (isValid) {
-				// add a classname for future styling
-				moduleEl.classList.add('module')				
-				module = { name, validation }
-				// make a request to the NPM registry to get module information.
-				axios.get(`${npmRegistry}${name}`).then(json => {
-					let href = json.data.repository.url.split('//')[1]
-					let dropDown = document.createElement('span')
-					dropDown.classList.add('dropdown')
-					
-					// create the link element of the dropDown
-					let documentationLink = document.createElement('a')
-					documentationLink.target = '_black'
-					documentationLink.href = `https://${href}`
-					documentationLink.innerText = `${name} documentation`
-					documentationLink.classList.add('documentation-link')
-					
-					// create the description element of the dropDown
-					let description = document.createElement('p')
-					description.classList.add('description')
-					description.innerText = json.data.description
+		// iterate over the require statements.
+		Object.keys(spans).forEach(span => {
+			// make sure the span is a require statement
+			if (spans[span].innerText === 'require' || spans[span].innerText === 'from') {
+				// moduleEl is the actual name of the module. example: 'axios'
+				let moduleEl = spans[span].nextSibling.nextSibling
+				// fileLine is the line of the require statement
+				let fileLine = spans[span].parentElement
+				// name is moduleEl, parsed. ex: 'axios' => axios
+				let name = moduleEl.innerText.replace(/['"`]/g, '')
+				let { isValid, validation } = validateModule(name)
+				if (isValid) {
+					// add a classname for future styling
+					moduleEl.classList.add('module')				
+					module = { name, validation }
+					// make a request to the NPM registry to get module information.
+					axios.get(`${npmRegistry}${name}`).then(json => {
+						let href = json.data.repository.url.split('//')[1]
+						let dropDown = document.createElement('span')
+						dropDown.classList.add('dropdown')
+						
+						// create the link element of the dropDown
+						let documentationLink = document.createElement('a')
+						documentationLink.target = '_black'
+						documentationLink.href = `https://${href}`
+						documentationLink.innerText = `${name} documentation`
+						documentationLink.classList.add('documentation-link')
+						
+						// create the description element of the dropDown
+						let description = document.createElement('p')
+						description.classList.add('description')
+						description.innerText = json.data.description
 
-					// append those elements to the dropDown element
-					dropDown.appendChild(documentationLink)
-					dropDown.appendChild(description)
+						// append those elements to the dropDown element
+						dropDown.appendChild(documentationLink)
+						dropDown.appendChild(description)
 
-					// append the dropDown element to the  fileLine
-					fileLine.appendChild(dropDown)
+						// append the dropDown element to the  fileLine
+						fileLine.appendChild(dropDown)
 
-					// add an event listener to the moduleEl.
-					// whenever it's clicked, toggled a class 'toggled' on the dropDown element.
-					moduleEl.addEventListener('click', e => {
-						if (!dropDown.classList.contains('toggled')) {
-							dropDown.classList.add('toggled')
-						} else {
-							dropDown.classList.remove('toggled')
-						}
+						// add an event listener to the moduleEl.
+						// whenever it's clicked, toggled a class 'toggled' on the dropDown element.
+						moduleEl.addEventListener('click', e => {
+							if (!dropDown.classList.contains('toggled')) {
+								dropDown.classList.add('toggled')
+							} else {
+								dropDown.classList.remove('toggled')
+							}
+						})
+					}).catch(error => {
+						console.error('Modoc plugin error:', error)
 					})
-				}).catch(error => {
-					console.error('Modoc plugin error:', error)
-				})
-				// maintain a list of the modules for future purposes.
-				modules.push(module)
+					// maintain a list of the modules for future purposes.
+					modules.push(module)
+				}
 			}
-		}
-	})
+		})
+	}
 }
+
+addDocs()
 
 // let builtInModules = [ 'assert', 'buffer', 'child_process', 'cluster', 'console', 'constants', 'crypto', 'dgram', 'dns', 'domain', 'events', 'fs', 'http', 'https', 'module', 'net', 'os', 'path', 'process', 'punycode', 'querystring', 'readline', 'repl', 'stream', 'string_decoder', 'timers', 'tls', 'tty', 'url', 'util', 'v8', 'vm', 'zlib' ]
