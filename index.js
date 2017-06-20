@@ -3,8 +3,10 @@ import axios from 'axios'
 import main from './main.css'
 import './manifest.json'
 
+// check to see if the file type is javascript
 let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
 
+// a function to validate if a module is even a valid module name.
 function validateModule(name) {
 	let validation = validate(name)
 	let isValid = validation.validForNewPackages || validation.validForOldPackages
@@ -21,50 +23,66 @@ function validateModule(name) {
 	}
 }
 
+// only attempt find docs if the file is javascript
 if (isJavaScript) {
+	// find all spans with class of pl-c1. This is the class name of require statements
 	let spans = document.getElementsByClassName('pl-c1')
 	let modules = []
 	let npmRegistry = 'https://registry.npmjs.org/'
+
+	// iterate over the require statements.
 	Object.keys(spans).forEach(span => {
+		// make sure the span is a require statement
 		if (spans[span].innerText == 'require') {
+			// moduleEl is the actual name of the module. example: 'axios'
 			let moduleEl = spans[span].nextSibling.nextSibling
+			// fileLine is the line of the require statement
 			let fileLine = spans[span].parentElement
+			// name is moduleEl, parsed. ex: 'axios' => axios
 			let name = moduleEl.innerText.replace(/['"`]/g, '')
 			let { isValid, validation } = validateModule(name)
 			if (isValid) {
+				// add a classname for future styling
+				moduleEl.classList.add('module')				
 				module = { name, validation }
+				// make a request to the NPM registry to get module information.
 				axios.get(`${npmRegistry}${name}`).then(json => {
 					let href = json.data.repository.url.split('//')[1]
-					fileLine.innerHTML += `
-						<span class="dropdown">${json.data.description} - <a target="_blank" href="https://${href}">Documentation</a></span>
-					`
-					spans[span].nextSibling.nextSibling.classList.add('module')
-					spans[span].nextSibling.nextSibling.addEventListener('click', e => {
-						let parent = e.target.parentElement
-						let descriptionSpan = document.createElement('span')
-						descriptionSpan.innerText = json.data.description
-						descriptionSpan.classList.add('dropdown')
+					let dropDown = document.createElement('span')
+					dropDown.classList.add('dropdown')
+					
+					// create the link element of the dropDown
+					let documentationLink = document.createElement('a')
+					documentationLink.target = '_black'
+					documentationLink.href = `https://${href}`
+					documentationLink.innerText = `${name} documentation`
+					documentationLink.classList.add('documentation-link')
+					
+					// create the description element of the dropDown
+					let description = document.createElement('p')
+					description.classList.add('description')
+					description.innerText = json.data.description
 
-						parent.classList.forEach(classItem => {
-							if (classItem == 'toggled') {
-								parent.classList.remove('toggled')
-								descriptionSpan.classList.remove('toggled')
-								parent.childNodes[parent.children.length - 1].classList.remove('toggled')
-								let description = parent.childNodes[parent.children.length - 1]
-								console.log(description)
-							} else {
-								parent.classList.add('toggled')
-								parent.childNodes[parent.children.length - 1].classList.remove('toggled')
+					// append those elements to the dropDown element
+					dropDown.appendChild(documentationLink)
+					dropDown.appendChild(description)
 
-								descriptionSpan.classList.add('toggled')
-							}
-						})
+					// append the dropDown element to the  fileLine
+					fileLine.appendChild(dropDown)
 
+					// add an event listener to the moduleEl.
+					// whenever it's clicked, toggled a class 'toggled' on the dropDown element.
+					moduleEl.addEventListener('click', e => {
+						if (!dropDown.classList.contains('toggled')) {
+							dropDown.classList.add('toggled')
+						} else {
+							dropDown.classList.remove('toggled')
+						}
 					})
 				}).catch(error => {
-					console.error(error)
+					console.error('Modoc plugin error:', error)
 				})
-				
+				// maintain a list of the modules for future purposes.
 				modules.push(module)
 			}
 		}

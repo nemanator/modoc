@@ -5,15 +5,13 @@
 	/*z-index: 9999 !important;*/
 }
 
-/*.dropdown {
-	visibility: hidden;
+.dropdown {
 	display: none;
 }
 
 .dropdown.toggled {
-	visibility: visible;
 	display: block;
-}*/
+}
 
 body {
 	background-color: red;
