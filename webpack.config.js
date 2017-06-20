@@ -24,7 +24,7 @@ module.exports = {
         }),
       },
 			{
-				test: /\.json$/,
+				test: /\.(json|png)$/,
 				loader: 'file-loader',
 				query: {
 					name: '[name].[ext]'

@@ -2,6 +2,9 @@ import validate from 'validate-npm-package-name'
 import axios from 'axios'
 import main from './main.css'
 import './manifest.json'
+import './icons/document-16.png'
+import './icons/document-48.png'
+import './icons/document-128.png'
 
 // check to see if the file type is javascript
 let isJavaScript = document.getElementsByClassName('type-javascript').length > 0
@@ -25,7 +28,7 @@ function validateModule(name) {
 
 // only attempt find docs if the file is javascript
 if (isJavaScript) {
-	// find all spans with class of pl-c1. This is the class name of require statements
+	// find all spans with class of pl-c1 or pl-k. This is the class name of require statements
 	let spans = document.querySelectorAll('.pl-c1,.pl-k')
 	let modules = []
 	let npmRegistry = 'https://registry.npmjs.org/'

@@ -11,5 +11,10 @@
 			"css": ["main.bundle.css"],
 			"js": ["index.bundle.js"]
 		}
-	]
+	],
+	"icons": {
+		"16": "document-16.png",
+		"48": "document-48.png",
+		"128": "document-128.png"
+	}
 }
