@@ -5,9 +5,7 @@ A chrome extension to add documentation of modules into github source code, to i
 
 **Currently Supported languages**
  - JavaScript 'require' and 'import' syntax.
-
-I'd like to get more languages supported, pull requests welcome!
-
+ - I'd like to get more languages supported, pull requests welcome!
 
 
 If you would like to contribute to this repository, below is an overview of this projects dev environment.
