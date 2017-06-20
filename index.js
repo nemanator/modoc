@@ -26,14 +26,14 @@ function validateModule(name) {
 // only attempt find docs if the file is javascript
 if (isJavaScript) {
 	// find all spans with class of pl-c1. This is the class name of require statements
-	let spans = document.getElementsByClassName('pl-c1')
+	let spans = document.querySelectorAll('.pl-c1,.pl-k')
 	let modules = []
 	let npmRegistry = 'https://registry.npmjs.org/'
 
 	// iterate over the require statements.
 	Object.keys(spans).forEach(span => {
 		// make sure the span is a require statement
-		if (spans[span].innerText == 'require') {
+		if (spans[span].innerText === 'require' || spans[span].innerText === 'from') {
 			// moduleEl is the actual name of the module. example: 'axios'
 			let moduleEl = spans[span].nextSibling.nextSibling
 			// fileLine is the line of the require statement
