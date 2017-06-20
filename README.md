@@ -1,10 +1,14 @@
 # modoc
+<img src="https://cdn.rawgit.com/rlindskog/modoc/master/document-logo.svg" width="300px"/>
+
 A chrome extension to add documentation of modules into github source code, to increase comprehensibility. 
 
 **Currently Supported languages**
  - JavaScript 'require' and 'import' syntax.
 
 I'd like to get more languages supported, pull requests welcome!
+
+
 
 If you would like to contribute to this repository, below is an overview of this projects dev environment.
 
