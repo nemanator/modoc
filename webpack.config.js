@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 
 module.exports = {
-	entry: path.resolve(__dirname, 'index.js'),
+	entry: path.resolve(__dirname, 'src', 'index.js'),
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'index.bundle.js'
